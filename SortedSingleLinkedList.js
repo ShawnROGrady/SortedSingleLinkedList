@@ -20,8 +20,7 @@
   -remove a value from the list
     -from beginning, middle, or end of the list
   -search the list for a value
-+I still need to:
-  -add a user interface/main() function
+  -all based on user input
 */
 //using strict node for safety
 "use strict";
@@ -104,18 +103,18 @@ function sortedSLL(){
             //console.log(input+" was inserted in to the middle of the list");
           }
         }
-        console.log(input+" was inserted in to the list");
+        alert(input+" was inserted in to the list");
 
       }else{
         //Adding duplicate value
-        console.log(input+" is already in the list, cannot add duplicate values");
+        alert(input+" is already in the list, cannot add duplicate values");
       }
 
     }else{
       //list is empty;
       head=newNode;
       tail=newNode;
-      console.log(input+" was inserted in to the list");
+      alert(input+" was inserted in to the list");
     }
   }
 
@@ -167,16 +166,16 @@ function sortedSLL(){
 
           }
         }
-        console.log(input+" has been removed from the list");
+        alert(input+" has been removed from the list");
 
       }else{
-        console.log(input+" is not in the list");
+        alert(input+" is not in the list");
       }
 
 
     }else{
       //list is empty
-      console.log("list is empty, cannot remove an item");
+      alert("list is empty, cannot remove an item");
     }
   }
 
@@ -208,7 +207,7 @@ function sortedSLL(){
       }
     }else{
       //list is empty
-      console.log("list is empty, cannot search for a value");
+      alert("list is empty, cannot search for a value");
     }
     return found;
   }
@@ -227,10 +226,10 @@ function sortedSLL(){
         tmp=tmp.nextNode;
         listString=listString+tmp.value+"\r"; //add value to string
       }
-      console.log(listString);
+      alert(listString);
     }else{
       //list is empty
-      console.log("list is empty");
+      alert("list is empty");
     }
   }
 
@@ -253,6 +252,51 @@ function sortedSLL(){
 
 }
 
+//main function:
+(function main(){
+  var list=sortedSLL();
+  var choice;
+  var userInput;
+  do{
+    choice=prompt("What would you like to do? \r 1. insert a value to the list \r 2. remove a value from the list \r 3. print the list \r 4. search the list \r 5. terminate program");
+    if(choice==1){
+      //insert value
+      userInput=prompt("enter a value to add to the list");
+      list.insert(Number(userInput));
+    }
+    else if(choice==2){
+      //remove a value
+      userInput=prompt("enter a value to remove from the list");
+      list.remove(Number(userInput));
+    }
+    else if(choice==3){
+      //print list
+      list.print();
+    }
+    else if(choice==4){
+      //search the list
+      userInput=prompt("enter a value to search for");
+      if(list.search(Number(userInput))){
+        //value was in list
+        alert(userInput+" is in the list");
+      }else{
+        //not in list
+        alert(userInput+" is not in the list");
+      }
+    }
+    else if(choice==5||choice==null){
+      //close program
+      alert("thank you for using this program");
+    }
+    else{
+      //invalid choice
+      alert("please enter a valid choice");
+
+    }
+  }while(choice!=5 && choice!=null);
+})();
+
+/*
 //testing basic functionality:
 var list=sortedSLL();
 list.print(); //"list is empty"
@@ -312,3 +356,4 @@ list.insert(9); //"9 is already in the list, cannot add duplicate values"
 list.insert(11); //"11 is already in the list, cannot add duplicate values"
 list.insert(14); //"14 is already in the list, cannot add duplicate values"
 list.print(); //9,10,11,12,13,14
+*/
