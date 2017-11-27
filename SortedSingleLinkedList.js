@@ -16,10 +16,10 @@
   -insert values to the list
     -at beginning, middle, or end of the list
   -print the list
-+I still need to:
-  -add functionality to remove a value
+  -remove a value from the list
     -from beginning, middle, or end of the list
-  -add functionality to search the list
+  -search the list for a value
++I still need to:
   -add functionality to handle the case where the user inputs a duplicate value
   -add a user interface/main() function
 */
@@ -72,6 +72,7 @@ function sortedSLL(){
         //new head node
         newNode.setNextNode(head);
         head=newNode;
+        //console.log(input+" was inserted at the beginning of the list");
       }else{
          var tmp=head;
          var prevNode=head;
@@ -88,14 +89,16 @@ function sortedSLL(){
         //}while(tmp!=tail);
 
         //at this point, we've either found the right place to place the node or are at the end of the list
-        if(tmp==tail){
+        if(tmp==tail&&tmp.value<input){
           //we're at the tail
           tail.setNextNode(newNode);
           tail=newNode;
+          //console.log(input+" was inserted at the end of the list");
         }else{
           //we're somewhere in the middle of the list
           prevNode.setNextNode(newNode);
           newNode.setNextNode(tmp);
+          //console.log(input+" was inserted in to the middle of the list");
         }
 
       }
@@ -111,12 +114,94 @@ function sortedSLL(){
 
   //remove function:
   function doRemove(input){
+    if(head.value!=null){
+      //there are things in the list
 
+      var found=doSearch(input);  //see if the value is even in the list
+      if(found==true){
+        //value to delete is in the list
+        /*
+        three cases to consider:
+          1. deleting the head node
+          2. deleting the tail node
+          3. deleting node in middle of list
+        */
+        var last=isLast();
+        if(last==true){
+          //deleting the last item in the list
+          head=Node();
+          tail=Node();
+        }else{
+          if(head.value==input){
+            //deleting head node
+            head=head.nextNode;
+          }else{
+            //deleting middle node or tail node
+            var tmp=head;
+            var prevNode=head;
+            //traverse list to find node
+            while(tmp!=tail){
+              if(tmp.value==input){
+                //found it
+                break;
+              }
+              prevNode=tmp;
+              tmp=tmp.nextNode;
+            }
+
+            //at this point, we've either found the node or are at the end of the list
+            if(tmp==tail){
+              //deleting the tail node
+              tail=prevNode;
+            }else{
+              //deleting a middle node
+              prevNode.setNextNode(tmp.nextNode);
+            }
+
+          }
+        }
+        console.log(input+" has been removed from the list");
+
+      }else{
+        console.log(input+" is not in the list");
+      }
+
+
+    }else{
+      //list is empty
+      console.log("list is empty, cannot remove an item");
+    }
   }
 
   //search function:
   function doSearch(input){
+    //this function returns a boolean value, which simplifies the other functions
+    var found=false;  //returned value
+    if(head.value!=null){
+      //there are things in the list
+      var tmp=head;
 
+      //traverse list searching for specific value
+      do{
+        if(tmp.value==input){
+          //value found
+          break;
+        }
+        tmp=tmp.nextNode;
+      }while(tmp!=tail);
+
+      //now, we're either at the end of the list or have found the value
+      if(tmp.value==input){
+        //console.log(input+" was found in the list");
+        found=true;
+      }else{
+        //console.log(input+" was not found in the list");
+      }
+    }else{
+      //list is empty
+      console.log("list is empty, cannot search for a value");
+    }
+    return found;
   }
 
   //display function:
@@ -140,10 +225,18 @@ function sortedSLL(){
     }
   }
 
+  //helper function which checks if there is more than one item in the list
+  function isLast(){
+    var last=false;
+    if(head==tail){
+      last=true;
+    }
+    return last;
+  }
   var publicAPI={
     insert:doInsert,
-    //remove:doRemove,
-    //search:doSearch,
+    remove:doRemove,
+    search:doSearch,
     print:doPrint
   };
 
@@ -174,3 +267,33 @@ list.print(); //0,1,2,3,6,7,8
 list.insert(4);
 list.insert(5);
 list.print(); //0,1,2,3,4,5,6,7,8
+
+//testing to see if properly removes head nodes:
+list.remove(0);
+list.remove(1);
+list.print(); //2,3,4,5,6,7,8
+
+//testing to see if properly removes middle nodes:
+list.remove(4);
+list.remove(5);
+list.remove(6);
+list.print(); //2,3,7,8
+
+//testing to see if properly removes tail nodes:
+list.remove(8);
+list.remove(7);
+list.remove(3);
+list.print(); //2
+list.remove(2);
+list.print(); //"list is empty"
+list.remove(2); //"list is empty, cannot remove an item"
+
+//testing to see if properly refills:
+list.insert(10);
+list.insert(11);
+list.insert(14);
+list.insert(12);
+list.insert(13);
+list.insert(9);
+list.remove(2); //"2 is not in the list"
+list.print(); //9,10,11,12,13,14
