@@ -15,12 +15,12 @@
 +I curently believe I can:
   -insert values to the list
     -at beginning, middle, or end of the list
+    -prevent user from inserting duplicate value
   -print the list
   -remove a value from the list
     -from beginning, middle, or end of the list
   -search the list for a value
 +I still need to:
-  -add functionality to handle the case where the user inputs a duplicate value
   -add a user interface/main() function
 */
 //using strict node for safety
@@ -68,48 +68,55 @@ function sortedSLL(){
         2. inserting a new tail node
         3. inserting node in middle of list
       */
-      if(input<head.value){
-        //new head node
-        newNode.setNextNode(head);
-        head=newNode;
-        //console.log(input+" was inserted at the beginning of the list");
-      }else{
-         var tmp=head;
-         var prevNode=head;
-        //traverse list to find proper place for new node
-        //do{
-        while(tmp!=tail){
-          if(tmp.value>input){
-            //found the right place
-            break;
-          }
-          prevNode=tmp;
-          tmp=tmp.nextNode;
-        }
-        //}while(tmp!=tail);
-
-        //at this point, we've either found the right place to place the node or are at the end of the list
-        if(tmp==tail&&tmp.value<input){
-          //we're at the tail
-          tail.setNextNode(newNode);
-          tail=newNode;
-          //console.log(input+" was inserted at the end of the list");
+      var inList=doSearch(input); //variable to see if value to be added is duplicate of one already in list
+      if(inList==false){
+        //adding new unique value to list
+        if(input<head.value){
+          //new head node
+          newNode.setNextNode(head);
+          head=newNode;
+          //console.log(input+" was inserted at the beginning of the list");
         }else{
-          //we're somewhere in the middle of the list
-          prevNode.setNextNode(newNode);
-          newNode.setNextNode(tmp);
-          //console.log(input+" was inserted in to the middle of the list");
+           var tmp=head;
+           var prevNode=head;
+          //traverse list to find proper place for new node
+          //do{
+          while(tmp!=tail){
+            if(tmp.value>input){
+              //found the right place
+              break;
+            }
+            prevNode=tmp;
+            tmp=tmp.nextNode;
+          }
+          //}while(tmp!=tail);
+
+          //at this point, we've either found the right place to place the node or are at the end of the list
+          if(tmp==tail&&tmp.value<input){
+            //we're at the tail
+            tail.setNextNode(newNode);
+            tail=newNode;
+            //console.log(input+" was inserted at the end of the list");
+          }else{
+            //we're somewhere in the middle of the list
+            prevNode.setNextNode(newNode);
+            newNode.setNextNode(tmp);
+            //console.log(input+" was inserted in to the middle of the list");
+          }
         }
+        console.log(input+" was inserted in to the list");
 
+      }else{
+        //Adding duplicate value
+        console.log(input+" is already in the list, cannot add duplicate values");
       }
-
 
     }else{
       //list is empty;
       head=newNode;
       tail=newNode;
+      console.log(input+" was inserted in to the list");
     }
-    console.log(input+" was inserted in to the list");
   }
 
   //remove function:
@@ -182,13 +189,15 @@ function sortedSLL(){
       var tmp=head;
 
       //traverse list searching for specific value
-      do{
+      //do{
+      while(tmp!=tail){
         if(tmp.value==input){
           //value found
           break;
         }
         tmp=tmp.nextNode;
-      }while(tmp!=tail);
+      }
+      //}while(tmp!=tail);
 
       //now, we're either at the end of the list or have found the value
       if(tmp.value==input){
@@ -296,4 +305,10 @@ list.insert(12);
 list.insert(13);
 list.insert(9);
 list.remove(2); //"2 is not in the list"
+list.print(); //9,10,11,12,13,14
+
+//testing to see if properly recognizes duplicates(for head,tail, and middle nodes)
+list.insert(9); //"9 is already in the list, cannot add duplicate values"
+list.insert(11); //"11 is already in the list, cannot add duplicate values"
+list.insert(14); //"14 is already in the list, cannot add duplicate values"
 list.print(); //9,10,11,12,13,14
