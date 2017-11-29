@@ -5,7 +5,7 @@ This is a fairly simple linked list, with the main complexity coming from the fa
 
 For the sake of simplicity, I am only considering the case where all items in the list are of **number** type. 
 
-My end goal is to implement a single linked list that takes user input to perform the following four functions:
+My end goal is to implement a single linked list that takes user input to perform the following five functions:
 
 1. insert a value
 2. remove a value
