@@ -14,7 +14,7 @@ My end goal is to implement a single linked list that takes user input to perfor
 5. close the program
 
 Along with this README file, this repository contains:
-  1. a JavaScript file with the entire implementation of the sll stack (SortedSingleLinkedList.js)
+  1. a JavaScript file with the entire implementation of the sorted sll(SortedSingleLinkedList.js)
   2. an html file to run said JavaScript file (SortedSingleLinkedList.html)
     
     -I plan to expand on this when I get the chance to learn more about html
